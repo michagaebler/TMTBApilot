@@ -1,0 +1,24 @@
+---
+title: "TMTBA Pilot analysis"
+author: "Michael Gaebler"
+date: "24. September 2015"
+output: html_document
+---
+
+#Analyze TMTBA pilot data
+
+```{r}
+
+require(prefmod)
+
+# read data
+setwd("D:/MB_VR_LAB/TMTBA/pilot_analysis")
+tmtba <- read.csv("TMTBA_M&B_results.csv", sep=";")
+tmtba <- tmtba[-c(1,23),]
+
+
+
+
+des<-llbt.design(tmtba, nitems=5)
+
+```
