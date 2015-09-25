@@ -5,9 +5,17 @@ date: "24. September 2015"
 output: html_document
 ---
 
-#Analyze TMTBA pilot data
-
 based on [this link on stackexchange](http://stats.stackexchange.com/questions/26994/how-to-fit-bradley-terry-luce-model-in-r-without-complicated-formula)
+
+Color-coding of conditions: 
+
+* white (w) = baseline: own point of view
+* orange (o) = 
+* red (r) = 
+* pink (p) = 
+* green (g) =
+
+
 ```{r}
 
 require(prefmod)
@@ -30,5 +38,10 @@ for (icol in 1:ncol(tmtba)) {
 }
 
 des <- llbt.design(tmtba, nitems=5)
+res <- gnm(y ~ o1 + o2 + o3 + o4 + o5, eliminate = mu, family = poisson, data = des)
+summary(res)
+
+wmat <- llbt.worth(res)
+plotworth(wmat)
 
 ```
