@@ -10,10 +10,10 @@ based on [this link on stackexchange](http://stats.stackexchange.com/questions/2
 Color-coding of conditions: 
 
 * white (w) = baseline: own point of view
-* orange (o) = 
-* red (r) = 
-* pink (p) = 
-* green (g) =
+* orange (o) = agency+ sync- 
+* red (r) = agency+ sync+
+* pink (p) = agency- sync+
+* green (g) = agency- sync-
 
 
 ```{r}
