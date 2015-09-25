@@ -7,6 +7,7 @@ output: html_document
 
 #Analyze TMTBA pilot data
 
+based on [this link on stackexchange](http://stats.stackexchange.com/questions/26994/how-to-fit-bradley-terry-luce-model-in-r-without-complicated-formula)
 ```{r}
 
 require(prefmod)
@@ -14,11 +15,20 @@ require(prefmod)
 # read data
 setwd("D:/MB_VR_LAB/TMTBA/pilot_analysis")
 tmtba <- read.csv("TMTBA_M&B_results.csv", sep=";")
+
+
+#remove NAs - also as factor levels
+
 tmtba <- tmtba[-c(1,23),]
 
+#str(tmtba)
 
+for (icol in 1:ncol(tmtba)) {
+  
+  tmtba[,icol] <- factor(tmtba[,icol])
+  
+}
 
-
-des<-llbt.design(tmtba, nitems=5)
+des <- llbt.design(tmtba, nitems=5)
 
 ```
