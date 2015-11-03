@@ -44,4 +44,21 @@ summary(res)
 wmat <- llbt.worth(res)
 plotworth(wmat)
 
+
+
+```
+
+--> naming above seems to be o1 = w, o2 = r, o3 = o, o4 = p, o5 = g (MG, 2.11.15)
+
+```{r}
+
+des <- llbt.design(tmtba, objnames = c("white", "red", "orange", "pink", "green"), nitems=5, resptype = "paircomp")
+res <- gnm(y ~ white + red + orange + pink + green, eliminate = mu, family = poisson, data = des)
+summary(res)
+
+wmat <- llbt.worth(res)
+plotworth(wmat)
+
+
+
 ```
