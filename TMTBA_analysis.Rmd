@@ -46,7 +46,7 @@ res <- gnm(y ~ white + red + orange + pink + green, eliminate = mu, family = poi
 summary(res)
 
 wmat <- llbt.worth(res)
-plot.wmat(wmat, main = "strength of seen body as felt body")
+plot.wmat(wmat, main = "seen body as felt body")
 
 
 
