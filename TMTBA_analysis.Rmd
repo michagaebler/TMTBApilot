@@ -10,8 +10,8 @@ based on [this link on stackexchange](http://stats.stackexchange.com/questions/2
 Color-coding of conditions: 
 
 * white (w) = baseline: own point of view
-* orange (o) = agency+ sync- 
 * red (r) = agency+ sync+
+* orange (o) = agency+ sync- 
 * pink (p) = agency- sync+
 * green (g) = agency- sync-
 
@@ -22,12 +22,12 @@ require(prefmod)
 
 # read data
 setwd("D:/MB_VR_LAB/TMTBA/pilot_analysis")
-tmtba <- read.csv("TMTBA_M&B_results.csv", sep=";")
+#tmtba <- read.csv("TMTBA_M&B_results.csv", sep=";")
+tmtba <- read.csv("TMTBA_M&B_results_cropped.csv", sep=";")
 
 
-#remove NAs - also as factor levels
 
-tmtba <- tmtba[-c(1,23),]
+
 
 #str(tmtba)
 
@@ -37,28 +37,20 @@ for (icol in 1:ncol(tmtba)) {
   
 }
 
-des <- llbt.design(tmtba, nitems=5)
-res <- gnm(y ~ o1 + o2 + o3 + o4 + o5, eliminate = mu, family = poisson, data = des)
-summary(res)
-
-wmat <- llbt.worth(res)
-plotworth(wmat)
-
-
-
-```
-
---> naming above seems to be o1 = w, o2 = r, o3 = o, o4 = p, o5 = g (MG, 2.11.15)
-
-```{r}
 
 des <- llbt.design(tmtba, objnames = c("white", "red", "orange", "pink", "green"), nitems=5, resptype = "paircomp")
+
+
+
 res <- gnm(y ~ white + red + orange + pink + green, eliminate = mu, family = poisson, data = des)
 summary(res)
 
 wmat <- llbt.worth(res)
-plotworth(wmat)
+plot.wmat(wmat, main = "strength of seen body as felt body")
 
 
 
 ```
+
+
+

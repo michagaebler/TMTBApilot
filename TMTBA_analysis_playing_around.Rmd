@@ -1,0 +1,103 @@
+---
+title: "TMTBA Pilot analysis"
+author: "Michael Gaebler"
+date: "24. September 2015"
+output: html_document
+---
+
+based on [this link on stackexchange](http://stats.stackexchange.com/questions/26994/how-to-fit-bradley-terry-luce-model-in-r-without-complicated-formula)
+
+Color-coding of conditions: 
+
+* white (w) = baseline: own point of view
+* red (r) = agency+ sync+
+* orange (o) = agency+ sync- 
+* pink (p) = agency- sync+
+* green (g) = agency- sync-
+
+
+```{r}
+
+require(prefmod)
+
+# read data
+setwd("D:/MB_VR_LAB/TMTBA/pilot_analysis")
+#tmtba <- read.csv("TMTBA_M&B_results.csv", sep=";")
+tmtba <- read.csv("TMTBA_M&B_results_cropped.csv", sep=";")
+
+
+#remove NAs - also as factor levels
+
+#tmtba <- tmtba[-c(1,23),]
+
+
+#str(tmtba)
+
+for (icol in 1:ncol(tmtba)) {
+  
+  tmtba[,icol] <- factor(tmtba[,icol])
+  
+}
+
+des <- llbt.design(tmtba, nitems=5)
+res <- gnm(y ~ o1 + o2 + o3 + o4 + o5, eliminate = mu, family = poisson, data = des)
+
+
+summary(res)
+
+wmat <- llbt.worth(res)
+plotworth(wmat)
+
+
+
+```
+
+--> naming above seems to be o1 = w, o2 = r, o3 = o, o4 = p, o5 = g (MG, 2.11.15)
+
+```{r}
+
+des <- llbt.design(tmtba, objnames = c("white", "red", "orange", "pink", "green"), nitems=5, resptype = "paircomp")
+
+# manually build design
+#matrix <- des[seq(1,20,2),-4:-1]
+
+
+
+mm   <- model.matrix(~ white + red + orange + pink + g1, data = des)
+X   <- mm[, -1]
+X2 <- X[seq(1,20,2),]
+ncat <- 2
+
+desfit <- llbt.fit(des$y, X, 10, 2)
+
+#desfitPC <- llbtPC.fit(des$y, X, 10, 2)
+
+
+res <- gnm(y ~ white + red + orange + pink + green, eliminate = mu, family = poisson, data = des)
+summary(res)
+
+wmat <- llbt.worth(res)
+plot.wmat(wmat)
+
+
+
+```
+
+Let's try a [different package (BradleyTerry2)](https://cran.r-project.org/web/packages/BradleyTerry2/vignettes/BradleyTerry.pdf)
+
+```{r}
+
+require(BradleyTerry2)
+
+# read data
+setwd("D:/MB_VR_LAB/TMTBA/pilot_analysis")
+tmtba_table <- read.csv("TMTBA_pilot_table.csv", sep=";", header = F)
+
+colnames(tmtba_table)[1:4] <- c("cond1", "cond2", "win1", "win2")
+
+tmtba_model <- BTm(cbind(win1, win2), cond1, cond2, ~ cond, id = "cond", data = tmtba_table)
+
+tmtba_model
+
+```
+
