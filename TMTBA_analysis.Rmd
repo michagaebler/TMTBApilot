@@ -7,6 +7,8 @@ output: html_document
 
 based on [this link on stackexchange](http://stats.stackexchange.com/questions/26994/how-to-fit-bradley-terry-luce-model-in-r-without-complicated-formula)
 
+[Full paper on prefmod package](www.jstatsoft.org/article/view/v048i10/v48i10.pdf)
+
 Color-coding of conditions: 
 
 * white (w) = baseline: own point of view
@@ -49,6 +51,33 @@ wmat <- llbt.worth(res)
 plot.wmat(wmat, main = "seen body as felt body")
 
 
+
+```
+
+Let's try without the white (baseline) condition
+
+```{r}
+
+tmtba_no_baseline <- read.csv("TMTBA_M&B_results_no_white.csv", sep=";")
+
+#str(tmtba)
+
+for (icol in 1:ncol(tmtba_no_baseline)) {
+  
+  tmtba_no_baseline[,icol] <- factor(tmtba_no_baseline[,icol])
+  
+}
+
+
+des_no_baseline <- llbt.design(tmtba_no_baseline, objnames = c("red", "orange", "pink", "green"), nitems=4, resptype = "paircomp")
+
+
+
+res_no_baseline <- gnm(y ~ red + orange + pink + green, eliminate = mu, family = poisson, data = des_no_baseline)
+summary(res_no_baseline)
+
+wmat_no_baseline <- llbt.worth(res_no_baseline)
+plot.wmat(wmat_no_baseline, main = "seen body as felt body")
 
 ```
 
